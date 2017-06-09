@@ -44,6 +44,7 @@ export class MultiselectDropdown implements OnInit, OnChanges, DoCheck, ControlV
   @Output() dropdownOpened = new EventEmitter();
   @Output() onAdded = new EventEmitter();
   @Output() onRemoved = new EventEmitter();
+  @Output() onPageFilter = new EventEmitter();
 
   @HostListener('document: click', ['$event.target'])
   onClick(target: HTMLElement) {
@@ -83,6 +84,12 @@ export class MultiselectDropdown implements OnInit, OnChanges, DoCheck, ControlV
     fixedTitle: false,
     dynamicTitleMaxItems: 3,
     maxHeight: '300px',
+    totalItems: 0,
+    itemsPerPage: 0,
+    showPagingInfo: false,
+    searchButtonClasses: 'btn btn-xs app-btn-primary',
+    searchGlyphiconClasses: 'fa fa-filter',
+    uncheckAllOnReload: false
   };
   defaultTexts: IMultiSelectTexts = {
     checkAll: 'Check all',
@@ -92,6 +99,7 @@ export class MultiselectDropdown implements OnInit, OnChanges, DoCheck, ControlV
     searchPlaceholder: 'Search...',
     defaultTitle: 'Select',
     allSelected: 'All selected',
+    findHelpText: 'Use Find to locate within all records.'
   };
 
   constructor(private element: ElementRef,
@@ -117,6 +125,10 @@ export class MultiselectDropdown implements OnInit, OnChanges, DoCheck, ControlV
       this.parents = this.options
         .filter(option => typeof option.parentId === 'number')
         .map(option => option.parentId);
+    }
+
+    if (changes['options'] && !changes['options'].isFirstChange()) {
+      if (this.settings.uncheckAllOnReload) { this.uncheckAll(); }
     }
 
     if (changes['texts'] && !changes['texts'].isFirstChange()) {
@@ -260,7 +272,7 @@ export class MultiselectDropdown implements OnInit, OnChanges, DoCheck, ControlV
   }
 
   searchFilterApplied() {
-    return this.settings.enableSearch && this.searchFilterText && this.searchFilterText.length > 0;
+    return !this.settings.showPagingInfo && this.settings.enableSearch && this.searchFilterText && this.searchFilterText.length > 0;
   }
 
   checkAll() {
@@ -302,4 +314,9 @@ export class MultiselectDropdown implements OnInit, OnChanges, DoCheck, ControlV
       event.preventDefault();
     }
   }
+
+  runPagingFilter(event: Event) {
+    this.onPageFilter.emit(this.searchFilterText);
+  }
+
 }

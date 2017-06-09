@@ -22,6 +22,13 @@ export interface IMultiSelectSettings {
   dynamicTitleMaxItems?: number;
   maxHeight?: string;
   displayAllSelectedText?: boolean;
+  totalItems?: number;
+  itemsPerPage?: number;
+  showPagingInfo?: boolean;
+  searchButtonClasses?: string;
+  searchGlyphiconClasses?: string;
+  pageInfoClasses?: string;
+  uncheckAllOnReload?: boolean;
 }
 
 export interface IMultiSelectTexts {
@@ -32,4 +39,5 @@ export interface IMultiSelectTexts {
   searchPlaceholder?: string;
   defaultTitle?: string;
   allSelected?: string;
+  findHelpText?: string;
 }

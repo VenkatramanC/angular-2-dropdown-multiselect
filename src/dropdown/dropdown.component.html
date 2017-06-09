@@ -10,7 +10,16 @@
         <span class="input-group-btn" *ngIf="searchFilterText.length > 0">
           <button class="btn btn-default btn-secondary" type="button" (click)="clearSearch($event)"><i class="fa fa-times"></i></button>
         </span>
+        <span *ngIf="settings.showPagingInfo" class="input-group-btn">
+          <button [ngClass]="settings.searchButtonClasses"
+                  (click)="runPagingFilter()"
+                  type="submit"
+                  title="Run Filter">
+            <span [ngClass]="settings.searchGlyphiconClasses"></span>
+          </button>
+        </span>
       </div>
+      <h6 [ngClass]="settings.pageInfoClasses"*ngIf="settings.showPagingInfo && settings.totalItems > 0"><small ><strong>{{ settings.itemsPerPage > settings.totalItems ? settings.totalItems : settings.itemsPerPage}} of {{settings.totalItems}} displayed.</strong><br/> {{texts.findHelpText}} </small></h6>
     </li>
     <li class="dropdown-divider divider" *ngIf="settings.enableSearch"></li>
     <li class="dropdown-item check-control check-control-check" *ngIf="settings.showCheckAll">
