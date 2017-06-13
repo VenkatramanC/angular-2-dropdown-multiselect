@@ -40,4 +40,5 @@ export interface IMultiSelectTexts {
   defaultTitle?: string;
   allSelected?: string;
   findHelpText?: string;
+  findTitle?: string;
 }

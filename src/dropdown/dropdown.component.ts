@@ -19,7 +19,7 @@ import {
   OnInit,
   Output,
   SimpleChanges
-} from '@angular/core';
+  } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NG_VALUE_ACCESSOR, Validator } from '@angular/forms';
 
 const MULTISELECT_VALUE_ACCESSOR: any = {
@@ -99,7 +99,8 @@ export class MultiselectDropdown implements OnInit, OnChanges, DoCheck, ControlV
     searchPlaceholder: 'Search...',
     defaultTitle: 'Select',
     allSelected: 'All selected',
-    findHelpText: 'Use Find to locate within all records.'
+    findHelpText: 'Use Find to locate within all records.',
+    findTitle: 'Run Filter'
   };
 
   constructor(private element: ElementRef,
@@ -125,6 +126,7 @@ export class MultiselectDropdown implements OnInit, OnChanges, DoCheck, ControlV
       this.parents = this.options
         .filter(option => typeof option.parentId === 'number')
         .map(option => option.parentId);
+      console.log('dd onchanges with: ' + changes['options'].isFirstChange() + ' uncheckAllOnReload: ' + this.settings.uncheckAllOnReload);
     }
 
     if (changes['options'] && !changes['options'].isFirstChange()) {
@@ -277,7 +279,7 @@ export class MultiselectDropdown implements OnInit, OnChanges, DoCheck, ControlV
 
   checkAll() {
     let checkedOptions = (!this.searchFilterApplied() ? this.options :
-      (new MultiSelectSearchFilter()).transform(this.options, this.searchFilterText))
+        (new MultiSelectSearchFilter()).transform(this.options, this.searchFilterText))
       .filter((option: IMultiSelectOption) => {
         if (this.model.indexOf(option.id) === -1) {
           this.onAdded.emit(option.id);
@@ -318,5 +320,4 @@ export class MultiselectDropdown implements OnInit, OnChanges, DoCheck, ControlV
   runPagingFilter(event: Event) {
     this.onPageFilter.emit(this.searchFilterText);
   }
-
 }
